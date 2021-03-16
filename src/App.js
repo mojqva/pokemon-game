@@ -1,67 +1,28 @@
-import Header from './components/Header';
-import Layout from './components/Layout';
-import Footer from './components/Footer';
-import PokemonCard from './components/PokemonCard';
+import HomePage from './routes/Home';
+import GamePage from './routes/Game';
 
-import z from './zxc.json';
-
-import s from'./App.module.css';
-
-import backgroundIMG1 from './assets/bg1.jpg';
-
-
+import {useState} from 'react';
 
 const App = () => {
-    return (
-        <>
-          <Header 
-          title = "Title" 
-          descr = "Description"
-          />
-          <Layout
-          title = "How to fight"  
-          urlBg = {backgroundIMG1} 
-          >
-            <p>
-              In the game two players face off against one another, one side playing as "blue", the other as "red" on a 3x3 grid.
-              Each player has five cards in a hand and the aim is to capture the opponent's cards by turning them into the
-              player's own color of red or blue.
-            </p>
-            
-          </Layout>
-          <Layout 
-          title = "Your cards" 
-          colorBg = "#181d23"
-          >
-            <div className = {s.flex}>
-              {
-                z.map((item) => 
-                <PokemonCard 
-                key = {item.id}
-                name = {item.name}
-                img = {item.img}
-                id = {item.id}
-                type = {item.type}
-                values = {item.values}
-                />)
-              }
-            </div>
-          </Layout>
-          <Layout 
-          title = "How to win" 
-          urlBg = {backgroundIMG1}
-          >
-            <p>
-              To win, a majority of the total ten cards played (including the one card that is not placed on the board) must be
-              of the player's card color. To do this, the player must capture cards by placing a card adjacent to an opponent's
-              card whereupon the 'ranks' of the sides where the two cards touch will be compared. If the rank of the opponent's
-              card is higher than the player's card, the player's card will be captured and turned into the opponent's color.
-              If the player's rank is higher, the opponent's card will be captured and changed into the player's color instead
-            </p>
-          </Layout>
-          <Footer />
-        </>
-    )
+  const [page, setPage] = useState('app');
+
+  const ChangePage = (page) => {
+    console.log('#### : <App/>');
+    setPage(page);
+  }
+  
+  switch(page){
+    case "app":
+      return <HomePage onChange = {ChangePage}/>
+    case "game":
+      return <GamePage 
+                onChange = {ChangePage}
+                title = "This is Game Page"
+                descr = "A place for future battles "
+              />
+    default:
+      return <HomePage/>
+  }
 }
 
 export default App;
