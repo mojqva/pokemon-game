@@ -1,23 +1,53 @@
+import z from '../../zxc.json';
+import PokemonCard from "../../components/PokemonCard";
 import s from './style.module.css';
+import {useHistory} from 'react-router-dom';
+import {useState} from 'react';
 
+const GamePage = ({onChange}) => {
+    const [pokemons, setPokemons] = useState(z);
 
-const GamePage = ({onChange, title, descr}) => {
-    
+    const [isActive, setActive] = useState(false);
+    const cardClick = () => {
+        setActive(!isActive);
+        const newArr = z.map(function (current) {
+            const card = Object.assign({}, current);
+            card.active = true;
+            return card;
+        })
+        setPokemons(newArr);
+        console.log(newArr);
+    }
+
+    const history = useHistory();
+
     const goHome = () => {
-        onChange && onChange('app')
+        history.push('/');
     }
 
     return(
-            <div className={s.root}>
-                <div className={s.forest}></div>
-                <div className={s.container}>
-                    <h1>{title}</h1>
-                    <p>{descr}</p>
-                    <button onClick = {goHome}>
-                        Go HomePage
-                    </button>
+            <>
+                <h1>This is Game Page</h1>
+                <button onClick = {goHome}>
+                    Go HomePage
+                </button>
+                <div className={s.flex}>
+                    {
+                        z.map((item) =>
+                            <PokemonCard
+                                key = {item.id}
+                                name = {item.name}
+                                img = {item.img}
+                                id = {item.id}
+                                type = {item.type}
+                                values = {item.values}
+                                cardClick={cardClick}
+                                isActive={isActive}
+                            />)
+                    }
                 </div>
-            </div>      
+
+            </>
     )
 }
 
