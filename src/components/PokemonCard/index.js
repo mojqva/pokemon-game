@@ -9,7 +9,7 @@ const pokemons = [];
 
 const PokemonCard = ({name , img, id, type, values, cardClick, isActive})  => {
     const handleClick = () => {
-        cardClick && cardClick();
+        cardClick && cardClick({id});
     }
     return (
         <div className = {s.root} onClick= {handleClick}>

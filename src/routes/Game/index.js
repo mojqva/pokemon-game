@@ -5,18 +5,17 @@ import {useHistory} from 'react-router-dom';
 import {useState} from 'react';
 
 const GamePage = ({onChange}) => {
-    const [pokemons, setPokemons] = useState(z);
+    const [pokemons, setPokemons] = useState(JSON.parse(JSON.stringify(z)));
 
-    const [isActive, setActive] = useState(false);
-    const cardClick = () => {
-        setActive(!isActive);
-        const newArr = z.map(function (current) {
-            const card = Object.assign({}, current);
-            card.active = true;
-            return card;
-        })
-        setPokemons(newArr);
-        console.log(newArr);
+    const changeCard = (id) => {
+        const result = pokemons.map(item => {
+            if (item.id === id) item["active"] = true;
+            return item});
+        setPokemons(result);
+    };
+
+    const cardClick = ({id}) => {
+        changeCard(id)
     }
 
     const history = useHistory();
@@ -33,7 +32,7 @@ const GamePage = ({onChange}) => {
                 </button>
                 <div className={s.flex}>
                     {
-                        z.map((item) =>
+                        pokemons.map((item) =>
                             <PokemonCard
                                 key = {item.id}
                                 name = {item.name}
@@ -42,7 +41,7 @@ const GamePage = ({onChange}) => {
                                 type = {item.type}
                                 values = {item.values}
                                 cardClick={cardClick}
-                                isActive={isActive}
+                                isActive={item.active}
                             />)
                     }
                 </div>
