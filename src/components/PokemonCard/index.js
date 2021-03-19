@@ -5,10 +5,11 @@ import cardBackSide from './assets/card-back-side.jpg';
 
 import s from "./style.module.css";
 
-const PokemonCard = ({name , img, id, type, values})  => {
-    const [isActive, setActive] = useState(false);
+const pokemons = [];
+
+const PokemonCard = ({name , img, id, type, values, cardClick, isActive})  => {
     const handleClick = () => {
-        setActive(!isActive);
+        cardClick && cardClick({id});
     }
     return (
         <div className = {s.root} onClick= {handleClick}>

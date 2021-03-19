@@ -20,7 +20,6 @@ const HomePage = ({onChange}) => {
     }
     return (
         <>
-          <MenuHeader/>
           <Header 
           title = "Pokemon Game" 
           descr = "The simple triple triad card game"
@@ -41,19 +40,6 @@ const HomePage = ({onChange}) => {
           title = "Your cards" 
           colorBg = "#181d23"
           >
-            <div className = {s.flex}>
-              {
-                z.map((item) => 
-                <PokemonCard 
-                key = {item.id}
-                name = {item.name}
-                img = {item.img}
-                id = {item.id}
-                type = {item.type}
-                values = {item.values}
-                />)
-              }
-            </div>
           </Layout>
           <Layout 
           title = "How to win" 
@@ -67,7 +53,6 @@ const HomePage = ({onChange}) => {
               If the player's rank is higher, the opponent's card will be captured and changed into the player's color instead
             </p>
           </Layout>
-          <Footer />
         </>
     )
 }

@@ -1,23 +1,52 @@
+import z from '../../zxc.json';
+import PokemonCard from "../../components/PokemonCard";
 import s from './style.module.css';
+import {useHistory} from 'react-router-dom';
+import {useState} from 'react';
 
+const GamePage = ({onChange}) => {
+    const [pokemons, setPokemons] = useState(JSON.parse(JSON.stringify(z)));
 
-const GamePage = ({onChange, title, descr}) => {
-    
+    const changeCard = (id) => {
+        const result = pokemons.map(item => {
+            if (item.id === id) item["active"] = true;
+            return item});
+        setPokemons(result);
+    };
+
+    const cardClick = ({id}) => {
+        changeCard(id)
+    }
+
+    const history = useHistory();
+
     const goHome = () => {
-        onChange && onChange('app')
+        history.push('/');
     }
 
     return(
-            <div className={s.root}>
-                <div className={s.forest}></div>
-                <div className={s.container}>
-                    <h1>{title}</h1>
-                    <p>{descr}</p>
-                    <button onClick = {goHome}>
-                        Go HomePage
-                    </button>
+            <>
+                <h1>This is Game Page</h1>
+                <button onClick = {goHome}>
+                    Go HomePage
+                </button>
+                <div className={s.flex}>
+                    {
+                        pokemons.map((item) =>
+                            <PokemonCard
+                                key = {item.id}
+                                name = {item.name}
+                                img = {item.img}
+                                id = {item.id}
+                                type = {item.type}
+                                values = {item.values}
+                                cardClick={cardClick}
+                                isActive={item.active}
+                            />)
+                    }
                 </div>
-            </div>      
+
+            </>
     )
 }
 
