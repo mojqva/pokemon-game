@@ -1,12 +1,6 @@
 import Header from '../../components/Header';
 import Layout from '../../components/Layout';
-import Footer from '../../components/Footer';
-import PokemonCard from '../../components/PokemonCard';
-import MenuHeader from '../../components/MenuHeader';
 
-import z from '../../zxc.json';
-
-import s from './style.module.css';
 
 import backgroundIMG1 from '../../assets/bg1.jpg';
 import backgroundIMG3 from '../../assets/bg3.jpg';
