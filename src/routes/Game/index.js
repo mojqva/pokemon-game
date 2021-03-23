@@ -1,93 +1,44 @@
-import PokemonCard from "../../components/PokemonCard";
+import {useRouteMatch, Switch, Route} from 'react-router-dom'
+import {useState} from 'react';
 
+import StartPage from './routes/Start'
+import BoardPage from './routes/Board'
+import FinishPage from './routes/Finish'
 
-import {useHistory} from 'react-router-dom';
-import {useState, useEffect} from 'react';
-
-import s from './style.module.css';
-
-import database from '../../service/firebase';
-
+import {PokemonContext} from '../../context/pokemonContext';
 
 const GamePage = () => {
-    const [pokemons, setPokemons] = useState({});
+    const [selectedPokemons, setSelectedPokemons] = useState({});
+    const match = useRouteMatch();
 
-    useEffect(() => {
-        database.ref('pokemons').once('value', (snapshot) => {
-            setPokemons(snapshot.val());
+    const handleSelectedPokemons = (key, pokemon) => {
+        setSelectedPokemons(prevState => {
+            if(prevState[key]){
+                const copyPokemon = {...prevState};
+                delete copyPokemon[key];
+
+                return copyPokemon
+            }
+            return {
+                ...prevState,
+                [key]: pokemon
+            }
+            
         })
-    }, [pokemons]);
 
-
-    const changeCard = (id, key) => {
-        setPokemons(prevState => {
-            return Object.entries(prevState).reduce((acc, item) => {
-                const pokemon = {...item[1]};
-
-                if (pokemon.id === id) {
-                    !pokemon.active ? pokemon.active = true : pokemon.active = false
-                    database.ref('pokemons/'+ key).update({active : pokemon.active});
-                };
-
-                acc[item[0]] = pokemon;
-
-                return acc;
-            }, {});
-        });
-    };
-
-    const history = useHistory();
-
-    const goHome = () => {
-        history.push('/');
     }
-
-    const addPokemon = () => {
-        const newKey = database.ref().child('pokemons').push().key;
-        console.log('newKey', newKey);
-        
-        database.ref('pokemons/' + newKey).set({
-             name: 'NewPokemon',
-             id: Date.now(),
-             img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/17.png",
-             values: {
-                 top: 1,
-                 bottom: 1,
-                 left: 1,
-                 right: 1,
-             },
-             active: true,
-             type: 'normal',
-        });
-    }
-
-    return(
-            <>
-                <h1>This is Game Page</h1>
-                <button onClick = {goHome}>
-                    Go Home
-                </button>
-                <button onClick = {addPokemon}>
-                    Add Pokemon
-                </button>
-                <div className={s.flex}>
-                    {
-                        Object.entries(pokemons).map(([key, {id, name, img, type, values, active}]) =>
-                            <PokemonCard
-                                key = {key}
-                                name = {name}
-                                img = {img}
-                                id = {id}
-                                type = {type}
-                                values = {values}
-                                cardClick={() => changeCard(id, key)}
-                                isActive={active}
-                            />)
-                    }
-                </div>
-
-            </>
-    )
-}
+    return (
+        <PokemonContext.Provider value = {{
+            pokemons: selectedPokemons,
+            onSelectedPokemons: handleSelectedPokemons
+        }}>
+            <Switch>
+                <Route path={`${match.path}/`} exact component={StartPage} />
+                <Route path={`${match.path}/board`} component={BoardPage} />
+                <Route path={`${match.path}/finish`} component={FinishPage} />
+            </Switch>
+        </PokemonContext.Provider>
+    );
+};
 
 export default GamePage;
