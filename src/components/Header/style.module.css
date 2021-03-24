@@ -162,8 +162,8 @@
     }
 }
 
-   button,
-   button:visited {
+button,
+button:visited {
        width: 100%;
        max-width: 240px;
        padding: 1rem;
@@ -175,6 +175,7 @@
        transition: all ease-in-out .25s;
        cursor: pointer;
        box-sizing: border-box;
+       margin-bottom: 30px;
    }
 
 button,
@@ -200,9 +201,8 @@ button:active {
     color: #f300b4;
     transition: all ease-in-out 0s;
     outline: none;
-    padding: 1.05rem 1rem calc(.95rem - 1px) calc(1rem - 1px);
-    border-top: 2px solid;
-    border-right: 2px solid;
+    background: #f300b4;
+    color: #fafafa;
 }
 
 button:disabled {
