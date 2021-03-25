@@ -15,7 +15,7 @@ const PokemonCard = ({possession, name , img, id, type, values, cardClick, isAct
         <div 
             className={cn(className, s.pokemonCard, {
                 [s.active]: isActive,
-                [s.selected]: isSelected
+                [s.selected]: isSelected,
             })}
             onClick = {handleClick}
         >

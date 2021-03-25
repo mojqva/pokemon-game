@@ -1,15 +1,26 @@
 import s from './style.module.css'
-import {useContext} from 'react'
+import {useContext, useState} from 'react'
 import {PokemonContext} from '../../../../context/pokemonContext'
 import PokemonCard from '../../../../components/PokemonCard'
 import { FireBaseContext } from '../../../../context/firebaseContext'
+import {useHistory} from 'react-router-dom';
 
 const FinishPage = () => {
-    const firebase = useContext(FireBaseContext);
+    const history = useHistory();
     const {pokemons} = useContext(PokemonContext);
+    const {onSelectedPokemons} = useContext(PokemonContext)
     const {enemyPokemons} = useContext(PokemonContext);
+    const [isSelected, setIsSelected] = useState(null);
 
-    
+    const oneCardSelected = (key, enemyPokemons) => {
+        const pokemon = {...enemyPokemons[key]};
+        console.log(pokemon);
+    }
+
+    if(Object.keys(pokemons).length === 0){
+        history.replace('/game');
+    }
+
     return (
         <>
             <div className = {s.flex}>
@@ -46,7 +57,7 @@ const FinishPage = () => {
                             values = {item.values}
                             isActive={true}
                             isSelected = {item.active}  
-                            cardClick = {() => {console.log(item)}}
+                            cardClick = {() => oneCardSelected(key, enemyPokemons)}
                         />)
                 }  
             </div>
